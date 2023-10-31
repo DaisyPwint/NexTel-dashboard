@@ -1,0 +1,23 @@
+.infos-container,.infos,.info-datas{
+    display: flex;
+}
+.infos-container{
+    gap: 80px;
+    margin: 30px 0;
+}
+.infos{
+    column-gap: 20px;
+}
+.info-datas{
+    flex-direction: column;
+    gap: 10px;
+    font: inherit;
+}
+.guest-info{
+    border: 1px solid #A9A9A9;
+    padding: 20px;
+}
+.guest-info-title{
+    margin-top: 0;
+    margin-bottom: 20px;
+}

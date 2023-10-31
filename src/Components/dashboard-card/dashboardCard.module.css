@@ -1,0 +1,16 @@
+.card{
+    width: 250px;
+}
+.icon{
+    background-color: #34495E;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.title{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

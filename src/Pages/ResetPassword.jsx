@@ -1,20 +1,18 @@
-import { useEffect, useState } from 'react';
 import { UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input,Space, Typography,theme } from 'antd';
+import SubmitButton from '../Components/SubmitButton';
+
 const App = () => {
   const [form] = Form.useForm();
-  const [clientReady, setClientReady] = useState(false);
-
-  // To disable submit button at the beginning.
-  useEffect(() => {
-    setClientReady(true);
-  }, []);
+  const { token: {colorBgHeader}} = theme.useToken();
+  
   const onFinish = (values) => {
     console.log('Finish:', values);
   };
   return (
-    <Form form={form} name="normal_login" 
-    className="form" onFinish={onFinish}>
+    <>
+      <Typography.Title style={{color: colorBgHeader,textAlign: "center",marginTop: "60px"}} level={1}>Reset Password</Typography.Title>
+      <Form form={form} className='form' name="validateOnly" layout="vertical" autoComplete="off" onFinish={onFinish}>
       <Form.Item
         name="username"
         rules={[
@@ -26,23 +24,14 @@ const App = () => {
       >
         <Input autoComplete='off' prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Name" />
       </Form.Item>
-      <Form.Item shouldUpdate>
-        {() => (
-          <Button
-            type="primary"
-            htmlType="submit"
-            block
-            disabled={
-              !clientReady ||
-              !form.isFieldsTouched(true) ||
-              !!form.getFieldsError().filter(({ errors }) => errors.length).length
-            }
-          >
-            Reset Password
-          </Button>
-        )}
+      <Form.Item wrapperCol={{ span: 12, offset: 3 }}>
+        <Space>
+          <SubmitButton form={form} />
+          <Button htmlType="reset">Cancel</Button>
+        </Space>
       </Form.Item>
-    </Form>
+      </Form>
+    </>
   );
 };
 export default App;

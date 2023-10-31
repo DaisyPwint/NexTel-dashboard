@@ -1,0 +1,11 @@
+.header,.action{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header{
+    margin-bottom: 30px;
+}
+.action{
+    gap: 20px;
+}

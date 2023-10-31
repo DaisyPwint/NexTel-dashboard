@@ -1,0 +1,35 @@
+.header,.action{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header{
+    margin-bottom: 30px;
+}
+.action{
+    gap: 20px;
+}
+.add-header{
+    display: flex;
+    column-gap: 20px;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.add-title{
+    margin: 0!important;
+}
+.form-container{
+    background-color: #f0f0f0;
+    padding: 35px 70px;
+}
+.form{
+    background-color: #fff;
+    padding: 20px 40px;
+}
+.btn-group{
+    text-align: right;
+    margin-top: 5px;
+}
+.btn-group button{
+    width: 150px;
+}

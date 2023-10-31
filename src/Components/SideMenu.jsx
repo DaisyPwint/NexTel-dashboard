@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, Layout, theme, ConfigProvider } from "antd";
+import { Menu, Layout, theme, ConfigProvider, Typography } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   BarsOutlined,
@@ -13,7 +13,6 @@ const SideMenu = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [selectedKeys, setSelectedKeys] = useState("/");
-  const [collapsed,setCollapsed] = useState(false);
 
   useEffect(() => {
     const pathName = location.pathname;
@@ -22,49 +21,56 @@ const SideMenu = () => {
 
   const items = [
     { label: "Dashboard", key: "/", icon: <DashboardOutlined /> },
-    { label: "All Reservations", key: "/reservations", icon: <BarsOutlined /> },
+    { label: "Reservations", key: "/reservations", icon: <BarsOutlined /> },
     {
-      label: "Room Management",
-      key: "rooms",
+      label: "Room",
+      key: "room",
       icon: <BarsOutlined />,
       children: [
-        { label: "Room Type", key: "/room-types" },
-        { label: "All Rooms", key: "/rooms" },
-        { label: "Reserved Rooms", key: "/reserved-rooms" },
+        { label: "types", key: "/room-type" },
+        { label: "lists", key: "/rooms" },
       ],
     },
     {
-      label: "Occupancy Overview",
+      label: "Occupation",
       key: "occupied-rooms",
       icon: <BarsOutlined />,
       children: [
-        { label: "Occupied Rooms", key: "/occupied-rooms" },
-        { label: "Occupation History", key: "/occupation-history" },
+        { label: "lists", key: "/occupied-rooms" },
+        { label: "Histories", key: "/occupation-history" },
       ],
     },
   ];
 
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  }
-
   return (
-        <Sider style={{background: colorBgHeader,paddingTop: "20px"}} collapsible collapsed={collapsed} onCollapse={toggleCollapsed}>
+        <Sider width={200} style={{
+          background: colorBgHeader,
+          overflow: 'auto',
+          height: '100vh',
+          position: 'fixed',
+          left: 0,
+          top: 0,
+          zIndex: 2,
+          bottom: 0
+          }} 
+          >
           <ConfigProvider theme={{
             components: {
               Menu: {
                 itemSelectedColor: "#fff",
                 popupBg: "#34495E",
-                itemHoverBg: "#4A6380",              }
+                itemHoverBg: "#4A6380",}
             }
           }}>
+            <Typography.Title style={{marginTop: '0.5em',display: 'flex',justifyContent: 'center',alignContent: 'center'}}>N</Typography.Title>
             <Menu onClick={({ key }) => {
                 navigate(key);
               }}
               selectedKeys={[selectedKeys]}
               mode="inline"
               items={items}
-              style={{background: colorBgHeader}}
+              style={{background: colorBgHeader,
+              }}
             />
           </ConfigProvider>
         </Sider>

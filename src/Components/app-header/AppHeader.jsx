@@ -1,6 +1,7 @@
 import React from 'react';
 import { UserOutlined } from "@ant-design/icons"
-import { Space,Avatar,Typography,Dropdown, Divider, theme } from "antd"
+import { Space,Avatar,Dropdown, Divider, theme } from "antd"
+import styles from './appHeader.module.css';
 
 const items = [
   {
@@ -8,14 +9,6 @@ const items = [
     label: (
       <a target="_blank"  href="/change">
         change password
-      </a>
-    ),
-  },
-  {
-    key: '2',
-    label: (
-      <a target="_blank"  href="/reset">
-        reset password
       </a>
     ),
   },
@@ -44,8 +37,13 @@ const AppHeader = () => {
   };
 
   return (
-    <header style={{backgroundColor: colorBgHeader}} className="header">
-      <Typography.Title style={{color: '#fff'}} level={2}>Nextel</Typography.Title>
+    <header style={{
+      paddingRight: '20px',
+      justifyContent: 'end',
+      position: 'sticky',
+      top: 0,
+      zIndex: 1,
+      width: '100%',backgroundColor: colorBgHeader}} className={styles.header}>
       <Dropdown trigger={['click']}
       menu={{
         items,

@@ -1,26 +1,28 @@
-import { Routes, Route } from 'react-router-dom';
-import Dashboard from '../Pages/Dashboard';
-import RoomTypes from '../Pages/room/RoomTypes';
-import AllRooms from '../Pages/room/AllRooms';
-import ReservedRooms from '../Pages/room/ReservedRooms';
-import AllReservations from '../Pages/reservation/AllReservations';
-import OccupationHistory from '../Pages/occupancy/OccupationHistory';
-import OccupiedRooms from '../Pages/occupancy/OccupiedRooms';
+import { Dashboard,Reservations,Detail,AddRoomType,EditRoomType,RoomType,AllRooms,OccupiedRooms,OccupationHistory, AddRoom } from '../Pages';
+import { useRoutes } from 'react-router-dom';
+import { Content } from 'antd/es/layout/layout';
 
 const AppContent = () => {
+  let elements = useRoutes([
+      { path: "/",element : <Dashboard/> },
+      { path: "add-room-type",element: <AddRoomType /> },
+      { path: "edit-room-type/:id",element: <EditRoomType /> },
+      { path: "room-type",element: <RoomType /> },
+      { path: "add-room",element: <AddRoom /> },
+      { path: "rooms",element: <AllRooms /> },
+      { path: "reservations",element: <Reservations /> },
+      { path: "reservation-detail",element: <Detail/> },
+      { path: "occupation-history",element: <OccupationHistory /> },
+      { path: "occupied-rooms",element: <OccupiedRooms /> },
+])
+
   return (
-    <Routes>
-      <Route path="/">
-        <Route index element={<Dashboard/>} />
-          <Route path="room-types" element={<RoomTypes />} />
-          <Route path="rooms" element={<AllRooms />} />
-          <Route path="reserved-rooms" element={<ReservedRooms />} />
-          <Route path="reservations" element={<AllReservations />} />
-          <Route path="occupation-history" element={<OccupationHistory />} />
-          <Route path="occupied-rooms" element={<OccupiedRooms />} />
-        </Route>
-    </Routes>
-  );
+    <Content style={{margin: "25px 30px"}}>
+      {
+        elements
+      }
+    </Content>
+  )
 };
 
 export default AppContent;
