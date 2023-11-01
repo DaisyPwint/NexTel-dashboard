@@ -4,7 +4,7 @@ const initialState = {
     types: [
         {
           id: '9bbaf287-991b-4af5-897d-f27fd0db297g',
-          name: 'Single Room',
+          name: 'Single',
           maximumCapacity: 1,
           pricePerNight: 120,
           size: '2000',

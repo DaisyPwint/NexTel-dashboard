@@ -45,13 +45,40 @@ const option3 = [
   },{
     value: 'available',
     label: 'Available',
+  },
+  {
+    value: 'maintained',
+    label: 'Maintained'
   }
 ]
 
 const EditableCell = ({
   editing,dataIndex,title,inputType,record,index,children,...restProps
 }) => {
-  const inputNode = inputType === 'number' ? <InputNumber/> : <Input/>
+  const isStatusField = dataIndex === 'status';
+
+  const inputNode = isStatusField ? (
+    editing ? (
+      <Select style={{width: 150}}>
+        {
+          option3.filter(option => option.value !== 'occupied').map(option => (
+            <Select.Option key={option.value} value={option.value.charAt(0).toUpperCase() + option.value.slice(1)}>
+              {option.label}
+            </Select.Option>
+            ))
+        }
+      </Select>
+    ): children
+  ) : inputType === 'number' ? <InputNumber/> : <Input style={{width: 100}}/>
+
+  if(isStatusField && record.status === 'Occupied'){
+    return (
+      <td {...restProps}>
+        {children}
+      </td>
+    )
+  }
+
   return (
     <td {...restProps}>
       {
@@ -110,7 +137,7 @@ const AllRooms = () => {
 
   const edit = (record) => {
     form.setFieldsValue({
-      no: '',
+      number: '',
       type: '',
       floor: '',
       ...record
@@ -154,12 +181,12 @@ const AllRooms = () => {
     },
     {
       title: 'Room No',
-      dataIndex: 'no',
+      dataIndex: 'number',
       align: "center",
       filteredValue: [searchText],
       onFilter: (value, record) => {
         return (
-          String(record.no).toLowerCase().includes(value.toLowerCase())
+          String(record.number).toLowerCase().includes(value.toLowerCase())
         );
       },
       editable: true
@@ -180,6 +207,11 @@ const AllRooms = () => {
       title: 'Status',
       dataIndex: 'status',
       align: "center",
+      editable: (record) => {
+        return (
+          isEditing(record) && (record.status === 'Available' || record.status === 'Maintained')
+        )
+      }
     },
     {
       title: 'Action',
@@ -208,12 +240,11 @@ const AllRooms = () => {
     if(!col.editable){
       return col;
     }
-console.log(col);
     return {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex === 'no' ? 'number' : col.dataIndex === 'floor' ? 'number' : 'text',
+        inputType: col.dataIndex === 'number' ? 'number' : col.dataIndex === 'floor' ? 'number' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record)

@@ -30,13 +30,13 @@ const AddRoom = () => {
   const dispatch = useDispatch();
 
   const handleAdd = (field) => {
-    form.validateFields([['rooms',field.name,'number'],['rooms',field.name,'type'],['rooms',field.name,'floor']]).then(() => {
-      const numRooms = form.getFieldValue(['rooms',field.name,'number']);
+    form.validateFields([['rooms',field.name,'quantity'],['rooms',field.name,'type'],['rooms',field.name,'floor']]).then(() => {
+      const numRooms = form.getFieldValue(['rooms',field.name,'quantity']);
       if(numRooms !== undefined && numRooms > 0){
         form.setFieldsValue({
           rooms: form.getFieldValue('rooms').map((room,index) => {
             if(index === field.key){
-              const newLists = new Array(numRooms).fill({id: uuid(),no: room.number,type: room.type,floor: room.floor,status: 'available'});
+              const newLists = new Array(numRooms).fill({id: uuid(),number: null,type: room.type,floor: room.floor,status: 'Available'});
               return {...room,roomRequests: newLists}
             }
           return room
@@ -50,7 +50,7 @@ const AddRoom = () => {
   const onFinish = (values) => {
     dispatch(addRoom(values.rooms[0].roomRequests));
     setShowClickAdd(false);
-    form.resetFields();    
+    navigate('/rooms')
   }
 
   return(
@@ -70,13 +70,13 @@ const AddRoom = () => {
             <div key={field.key}>
               <Row gutter={24}>
                 <Col span={8}>
-                  <Form.Item name={[field.name, 'number']} label="Number of Room" rules={[
+                  <Form.Item name={[field.name, 'quantity']} label="Quantity of Room" rules={[
                     {
                       required: true,
-                      message: 'Please input room\'s number'
+                      message: 'Please input room\'s quantity'
                     }
                   ]}>
-                    <InputNumber min={1} placeholder='Enter number of room' style={{width: '100%'}}/>
+                    <InputNumber min={1} placeholder='Enter quantity of room' style={{width: '100%'}}/>
                   </Form.Item>
                 </Col>
                 <Col span={8}>
@@ -106,7 +106,10 @@ const AddRoom = () => {
                   <>
                     <Form.Item className={styles['btn-group']}>
                       <Space>
-                        <Button onClick={() => form.resetFields()}>Cancel</Button>
+                        <Button onClick={() => {
+                          form.resetFields();
+                          setShowClickAdd(false);
+                        }}>Cancel</Button>
                         <Button type="dashed" onClick={() => handleAdd(field)}>
                           + Add 
                         </Button>
@@ -131,7 +134,7 @@ const AddRoom = () => {
                       <Row gutter={24} key={subField.key}>
                         <Col span={8}>
                           <Form.Item
-                              name={[subField.name, 'no']}
+                              name={[subField.name, 'number']}
                               rules={[
                                 {
                                   required: true,

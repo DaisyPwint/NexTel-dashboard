@@ -4,17 +4,24 @@ const initialState = {
     roomRequests : [
         {
           id: '001',
-          no: 101,
+          number: 101,
           type: 'Single',
           floor: 1,
-          status: 'occupied'
+          status: 'Occupied'
         },
         {
           id: '002',
-          no: 102,
+          number: 102,
           type: 'Double',
           floor: 1,
-          status: 'available'
+          status: 'Available'
+        },
+        {
+          id: '003',
+          number: 103,
+          type: 'Family',
+          floor: 1,
+          status: 'Maintained'
         }
       ]
 }

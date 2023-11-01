@@ -40,7 +40,7 @@ const OccupiedRooms = () => {
           String(record.name).toLowerCase().includes(value.toLowerCase()) ||
           String(record.phone).toLowerCase().includes(value.toLowerCase()) ||
           String(record.email).toLowerCase().includes(value.toLowerCase()) ||
-          String(record.no).toLowerCase().includes(value.toLowerCase())
+          String(record.number).toLowerCase().includes(value.toLowerCase())
           )
       },
       align: 'center',
@@ -63,7 +63,7 @@ const OccupiedRooms = () => {
     },
     {
       title: 'Room No',
-      dataIndex: 'no',
+      dataIndex: 'number',
       align: 'center'
     },
     {
@@ -88,29 +88,29 @@ const OccupiedRooms = () => {
       id: '001',
       name: 'Mg Mg',
       phone: '+95 9788676754',
-      email: "chanthike@gmail.com",
-      no: 113,
-      type: "single",
+      email: "mgmg@gmail.com",
+      number: 113,
+      type: "Single",
       checkIn: '01/10/2023',
       checkOut: '05/10/2023'
     },
     {
       id: '002',
-      name: 'Mg Mg',
+      name: 'Aung Aung',
       phone: '+95 9788676754',
-      email: "chanthike@gmail.com",
-      no: 114,
-      type: "double",
-      checkIn: '01/10/2023',
+      email: "aungaung@gmail.com",
+      number: 114,
+      type: "Double",
+      checkIn: '02/10/2023',
       checkOut: '05/10/2023'
     },
     {
       id: '003',
-      name: 'Mg Mg',
+      name: 'Su Su',
       phone: '+95 9788676754',
-      email: "chanthike@gmail.com",
-      no: 115,
-      type: "family",
+      email: "susu@gmail.com",
+      number: 115,
+      type: "Family",
       checkIn: '01/10/2023',
       checkOut: '05/10/2023'
     },
@@ -187,7 +187,7 @@ const OccupiedRooms = () => {
           </a>
         </Dropdown>
       </div>
-    </div>
+      </div>
       <Table columns={columns} dataSource={filteredData || data} />
     </>
   )
