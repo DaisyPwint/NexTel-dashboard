@@ -8,3 +8,6 @@ export {default as AddRoom} from './rooms/AddRoom';
 export {default as AllRooms} from './rooms/AllRooms';
 export {default as OccupiedRooms} from './occupancy/OccupiedRooms';
 export {default as OccupationHistory} from './occupancy/OccupationHistory';
+export {default as Login} from './Login';
+export {default as ResetPwd} from './ResetPassword';
+export {default as ChangePwd} from './ChangePassword';

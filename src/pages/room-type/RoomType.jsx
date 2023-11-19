@@ -1,15 +1,31 @@
 import { Table, Input, Typography, Button} from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from '../room.module.css';
 import { PlusOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectAllTypes } from '../../features/room-type/typeSlice';
+import { useSelector,useDispatch } from 'react-redux';
+import { selectAllTypes, setReservation } from '../../features/room-type/typeSlice';
+import { useGetRoomTypeQuery } from '../../features/room-type/typeApiSlice';
 
 const RoomType = () => {
   const [searchText,setSearchText] = useState("");
   const navigate = useNavigate();
-  const types =useSelector(selectAllTypes);
+  const dispatch = useDispatch();
+  // const types =useSelector(selectAllTypes);
+  const {data:types,isLoading,error} = useGetRoomTypeQuery();
+  console.log(types);
+
+  useEffect(() => {
+    dispatch(setReservation(types))
+  },[dispatch,types])
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }          
 
   const columns = [
     {
@@ -49,8 +65,8 @@ const RoomType = () => {
       key: 'action',
       align: "center",
       render: (_,record) => (
-        <Link to={`/edit-room-type/${record.id}`} state={{record}}>Edit</Link>
-      )
+          <Link to={record?.id}>Edit</Link>
+        )
     }
   ]
   

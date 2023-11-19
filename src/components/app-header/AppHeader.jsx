@@ -1,23 +1,10 @@
 import React from 'react';
 import { UserOutlined } from "@ant-design/icons"
 import { Space,Avatar,Dropdown, Divider, theme } from "antd"
+import { logout } from '../../features/auth/authSlice';
 import styles from './appHeader.module.css';
-
-const items = [
-  {
-    key: '1',
-    label: (
-      <a target="_blank"  href="/change">
-        change password
-      </a>
-    ),
-  },
-  {
-    key: '3',
-    danger: true,
-    label: 'Log out',
-  },
-];
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const { useToken } = theme;
 
@@ -25,7 +12,31 @@ const AppHeader = () => {
 
   const { token: {colorBgHeader}} = theme.useToken();
   const { token } = useToken();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login');
+  }
+
+  const items = [
+    {
+      key: '1',
+      label: (
+        <a target="_blank"  href="/change">
+          change password
+        </a>
+      ),
+    },
+    {
+      key: '3',
+      danger: true,
+      label: 'Log out',
+      onClick: handleLogout
+    },
+  ];
+  
   const contentStyle = {
     padding: "15px",
     backgroundColor: token.colorBgElevated,

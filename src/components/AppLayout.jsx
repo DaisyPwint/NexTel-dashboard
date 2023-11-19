@@ -1,7 +1,8 @@
 import { Layout} from 'antd';
 import AppHeader from './app-header/AppHeader';
-import AppContent from './AppContent';
+import { Content } from 'antd/es/layout/layout';
 import SideMenu from './SideMenu';
+import { Outlet } from 'react-router-dom';
 
 const AppLayout = () => {
   return (
@@ -9,7 +10,9 @@ const AppLayout = () => {
       <SideMenu/>
       <Layout style={{marginLeft: '200px'}}>
         <AppHeader />
-        <AppContent/>
+        <Content style={{margin: "25px 30px"}}>
+          <Outlet/>
+        </Content>
       </Layout>
     </Layout>
   )

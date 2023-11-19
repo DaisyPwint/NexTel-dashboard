@@ -11,10 +11,12 @@ const AppContent = () => {
       { path: "add-room",element: <AddRoom /> },
       { path: "rooms",element: <AllRooms /> },
       { path: "reservations",element: <Reservations /> },
-      { path: "reservation-detail",element: <Detail/> },
+      { path: "reservation-detail/:id",element: <Detail/> },
       { path: "occupation-history",element: <OccupationHistory /> },
       { path: "occupied-rooms",element: <OccupiedRooms /> },
 ])
+
+console.log("Elements in AppContent:", elements);
 
   return (
     <Content style={{margin: "25px 30px"}}>

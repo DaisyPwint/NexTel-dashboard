@@ -2,16 +2,16 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     types: [
-        {
-          id: '9bbaf287-991b-4af5-897d-f27fd0db297g',
-          name: 'Single',
-          maximumCapacity: 1,
-          pricePerNight: 120,
-          size: '2000',
-          amenityIds: [1,3],
-          imageUrl: 'signleRoom.jpg',
-          description: 'single room'
-        }
+        // {
+        //   id: '9bbaf287-991b-4af5-897d-f27fd0db297g',
+        //   name: 'Single',
+        //   maximumCapacity: 1,
+        //   pricePerNight: 120,
+        //   size: '2000',
+        //   amenityIds: [1,3],
+        //   imageUrl: 'signleRoom.jpg',
+        //   description: 'single room'
+        // }
       ]
 }
 
@@ -19,6 +19,9 @@ const typeSlice = createSlice({
     name: 'type',
     initialState,
     reducers: {
+        setReservation : (state,{payload}) => {
+            state.types = payload;
+        },
         addType: (state,{payload}) => {
             return {
                 ...state,
@@ -35,7 +38,7 @@ const typeSlice = createSlice({
     }
 })
 
-export const {addType,editType} = typeSlice.actions;
+export const {setReservation,addType,editType} = typeSlice.actions;
 
 export default typeSlice.reducer;
 

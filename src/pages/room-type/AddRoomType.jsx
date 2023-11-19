@@ -1,20 +1,40 @@
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Form,Input,Checkbox,Row,Col,Button, Typography, Space, InputNumber} from "antd";
 import styles from '../room.module.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addType } from "../../features/room-type/typeSlice"
-import { v4 as uuid } from 'uuid';
+// import { v4 as uuid } from 'uuid';
+// import { addType } from "../../features/room-type/typeSlice";
+import { useAddRoomTypeMutation } from "../../features/room-type/typeApiSlice";
 
 const AddRoomType = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [ addRoomType ] = useAddRoomTypeMutation();
 
-const onFinish = (values) => {
-  const newValues = { id: uuid(),...values};
-  dispatch(addType(newValues));
-  navigate('/room-type')
+const onFinish = async (values) => {
+  // const newValues = { id: uuid(),...values};
+  // const response = await dispatch(addType(newValues));
+  try{
+    const response = await dispatch(addRoomType({...values}));
+    console.log(response);
+    if(response.success){
+      toast.success(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      navigate('/room-type')
+    }else{
+      console.error('Error adding room type:', response.error);
+      toast.error(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  }catch(error){
+    console.error('Unexpected error:', error);
+  }
 }
 
   return (
@@ -128,6 +148,7 @@ const onFinish = (values) => {
           </Space>
       </Form.Item>
     </Form>
+    <ToastContainer />
     </>
   )
 }

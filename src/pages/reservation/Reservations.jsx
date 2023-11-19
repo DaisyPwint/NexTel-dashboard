@@ -1,7 +1,11 @@
 import { Input, Table, Typography, Space, Button, Dropdown, theme, Divider, Form, DatePicker, Select } from "antd"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from './reservation.module.css';
 import { FilterOutlined, ReloadOutlined } from "@ant-design/icons";
+import { Link} from "react-router-dom";
+import { useGetReservationsQuery } from "../../features/reservation/reserveApiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { allReservation, setReservations } from "../../features/reservation/reserveSlice";
 
 const options = [
   {
@@ -26,6 +30,24 @@ const Reservations = () => {
   const { token } = useToken();
   const [filteredData,setFilteredData] = useState(null);
   const [onFilter,setOnfilter] = useState(false);
+  const {data:data,isLoading,error} = useGetReservationsQuery();
+  const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  const reservations = useSelector(allReservation);
+
+  useEffect(() => {
+    if(data){
+      dispatch(setReservations(data));
+    }
+  },[dispatch,data])
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   const contentStyle = {
     padding: "15px",
@@ -37,40 +59,65 @@ const Reservations = () => {
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'id',
+      dataIndex: 'reservationId',
       filteredValue: [searchText],
       onFilter: (value,record) => {
         return (
-          String(record.id).toLowerCase().includes(value.toLowerCase()) ||
-          String(record.name).toLowerCase().includes(value.toLowerCase()) ||
-          String(record.room).toLowerCase().includes(value.toLowerCase())
+          String(record.reservationId).toLowerCase().includes(value.toLowerCase()) ||
+          String(record.guestName).toLowerCase().includes(value.toLowerCase()) ||
+          String(record.guestEmail).toLowerCase().includes(value.toLowerCase()) ||
+          String(record.totalRoom).toLowerCase().includes(value.toLowerCase())
         )
       }
     },
     {
-      title: 'Name',
-      dataIndex: 'name',
+      title: 'Guest',
+      dataIndex: 'guestInfo',
       align: "center",      
+      render: (_,record) => (
+        <Space direction="vertical">
+          <div>{record.guestName}</div>
+          <div>{record.guestEmail}</div>
+        </Space>
+      )
     },
     {
       title: 'Total Room',
-      dataIndex: 'room',
+      dataIndex: 'totalRoom',
       align: "center",      
     },
     {
       title: 'Check-in',
       dataIndex: 'checkIn',
-      align: "center",    
+      align: "center",   
+      render: (_,record) => (
+        <Space direction="vertical">
+          <div>{record.checkIn.date}</div>
+          <div>{record.checkIn.time}</div>
+        </Space>
+      )
     },
     {
       title: 'Check-out',
       dataIndex: 'checkOut',
-      align: "center",    
+      align: "center",  
+      render: (_,record) => (
+        <Space direction="vertical">
+          <div>{record.checkOut.date}</div>
+          <div>{record.checkOut.time}</div>
+        </Space>
+      )    
     },
     {
       title: 'Reservation Date',
-      dataIndex: 'reservationDate',
+      dataIndex: 'createdAt',
       align: "center",  
+      render: (_,record) => (
+        <Space direction="vertical">
+          <div>{record.createdAt.date}</div>
+          <div>{record.createdAt.time}</div>
+        </Space>
+      )
     },
     {
       title: 'Status',
@@ -92,41 +139,46 @@ const Reservations = () => {
       title: 'Detail',
       dataIndex: 'detail', 
       align: "center",
-      render: () => (
-        <a href="/reservation-detail" style={{textDecoration:'underline'}}>Detail</a>
-      )     
+      render: (_,record) =>  (
+          <Link to={record.id} style={{textDecoration: 'underline'}}>Detail</Link>
+          )
     }
   ]
 
-  const data = [
-    {
-      id:'001',
-      name: 'Mg Mg mgmg@gmail.com',
-      room: 6,
-      checkIn:  '01/10/2023 11:00 PM',
-      checkOut: '05/10/2023 11:00 PM',
-      reservationDate: '05/10/2023 11:00 PM',
-      status: 'Pending'
+const trasformedData = reservations.map(item => {
+  return {
+    id: item.id,
+    reservationId: item.reservationId,
+    guestName: item.guestName.charAt(0).toUpperCase() + item.guestName.slice(1),
+    guestEmail: item.guestEmail,
+    totalRoom: 1,
+    checkIn: {
+      date: new Date(item.checkIn * 1000).toLocaleString('en-GB', { day: 'numeric',month: 'numeric',year: 'numeric' }),
+      time: new Date(item.checkIn * 1000).toLocaleString('en-GB', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      }).replace(/\s/, ' ').toUpperCase(),
     },
-    {
-      id:'002',
-      name: 'Su Su susu@gmail.com',
-      room: 3,
-      checkIn:  '03/10/2023 11:00 PM',
-      checkOut: '04/10/2023 11:00 PM',
-      reservationDate: '01/10/2023 11:00 PM',
-      status: 'Pending'
+    checkOut: {
+      date: new Date(item.checkOut * 1000).toLocaleString('en-GB', { day: 'numeric',month: 'numeric',year: 'numeric' }),
+      time: new Date(item.checkOut * 1000).toLocaleString('en-GB', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      }).replace(/\s/, ' ').toUpperCase(),
     },
-    {
-      id:'003',
-      name: 'Hla Hla hlahla@gmail.com',
-      room: 2,
-      checkIn:  '02/10/2023 11:00 PM',
-      checkOut: '05/10/2023 11:00 PM',
-      reservationDate: '05/10/2023 11:00 PM',
-      status: 'Confirmed'
-    }
-  ]
+    createdAt: {
+      date: new Date(item.createdAt * 1000).toLocaleString('en-GB', { day: 'numeric',month: 'numeric',year: 'numeric' }),
+      time: new Date(item.createdAt * 1000).toLocaleString('en-GB', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      }).replace(/\s/, ' ').toUpperCase(),
+    },
+    status: item.status.charAt(0) + item.status.slice(1).toLowerCase()
+  }
+})
 
   const onFinish = (fieldsValue) => {
     const values = {
@@ -136,7 +188,7 @@ const Reservations = () => {
       'out-date-picker': fieldsValue['out-date-picker'] ? fieldsValue['out-date-picker'].format('DD/MM/YYYY') : null
     }
     
-    const filteredValues = data.filter((record) => {
+    const filteredValues = reservations.filter((record) => {
       const statusFilter = !values.status || record.status.toLowerCase() === values.status;
   
       const reserveDate = values['reserve-date-picker'];
@@ -210,7 +262,7 @@ const Reservations = () => {
         </Dropdown>
       </div>
     </div>
-    <Table columns={columns} bordered dataSource={filteredData || data} />
+    <Table columns={columns} bordered dataSource={filteredData || trasformedData} />
     </>
   )
 }
